@@ -4,7 +4,7 @@ import Card from "./card";
 
 import Api from "../utils/api";
 
-const MainComponent = ({ onAddPlace, onEditAvatar, onEditProfile, onCardClick }) => {
+const Main = ({ onAddPlace, onEditAvatar, onEditProfile, onCardClick }) => {
 
 
   const [userName, setUserName] = useState("Жак-Ив Кусто");
@@ -65,4 +65,4 @@ const MainComponent = ({ onAddPlace, onEditAvatar, onEditProfile, onCardClick })
   );
 }
 
-export default MainComponent;
+export default Main;
