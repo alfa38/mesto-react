@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ModalWithFormComponent = ({ children, isOpen, name, headerTitle, okButtonText, closeAriaText, buttonAriaText, onClose }) => {
+const PopupWithForm = ({ children, isOpen, name, headerTitle, okButtonText, closeAriaText, buttonAriaText, onClose }) => {
   return (
     <div className={`modal-overlay ${isOpen ? 'modal-overlay_open' : ''}`} id={`modal-${name}`}>
       <div className="modal-overlay__content">
@@ -24,4 +24,4 @@ const ModalWithFormComponent = ({ children, isOpen, name, headerTitle, okButtonT
   );
 }
 
-export default ModalWithFormComponent;
+export default PopupWithForm;
