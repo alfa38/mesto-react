@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Header from './components/header';
 import Main from './components/main';
 import Footer from './components/footer';
-import ModalWithForm from './components/modalWithForm';
-import ModalWithImage from './components/modalWithImage';
+import PopupWithForm from './components/popupWithForm';
+import ModalWithImage from './components/ImagePopup';
 
 import './App.css';
 
@@ -48,7 +48,7 @@ function App() {
         />
         <Footer />
       </div>
-      <ModalWithForm
+      <PopupWithForm
         name='edit-profile'
         headerTitle="Редактировать профиль"
         buttonAriaText="Сохранить изменения профиля"
@@ -62,8 +62,8 @@ function App() {
           <input minLength="2" maxLength="200" name="profession" id="input-profession" className="edit-form__input edit-form__input_edit_profession" type="text" placeholder="Укажите род вашей деятельности" required />
           <span className="edit-form__error input-profession-error">Error</span>
         </div>
-      </ModalWithForm>
-      <ModalWithForm
+      </PopupWithForm>
+      <PopupWithForm
         name="add-new-card"
         headerTitle="Новое место"
         buttonAriaText="Добавить новое место"
@@ -76,8 +76,8 @@ function App() {
           <input name="cardLink" id="input-cardlink" type="url" className="edit-form__input edit-form__input_edit_img-source" placeholder="Ссылка на картинку" required />
           <span className="edit-form__error input-cardlink-error">Error</span>
         </div>
-      </ModalWithForm>
-      <ModalWithForm
+      </PopupWithForm>
+      <PopupWithForm
         name="update-avatar"
         headerTitle="Сменить аватар"
         buttonAriaText="Сохранить изменения"
@@ -88,15 +88,15 @@ function App() {
           <input name="avatarLink" id="input-avatarLink" type="url" className="edit-form__input edit-form__input_edit_img-source" placeholder="Ссылка на новый аватар" required />
           <span className="edit-form__error input-avatarLink-error">Error</span>
         </div>
-      </ModalWithForm>
-      <ModalWithForm
+      </PopupWithForm>
+      <PopupWithForm
         name="confirm-delete"
         headerTitle="Вы уверены?"
         okButtonText='Да'
         buttonAriaText="Подтвердить удаление карточки"
         onClose={() => closeAllPopups()}
       >
-      </ModalWithForm>
+      </PopupWithForm>
       <ModalWithImage
         onClose={() => closeAllPopups()}
         card={selectedCard}

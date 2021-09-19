@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import { useEffect } from "react/cjs/react.development";
 
-const ModalWithImageComponent = ({ card, onClose }) => {
+const ImagePopup = ({ card, onClose }) => {
   const [link, setLink] = useState('');
   useEffect(() => {
     if (!card) {
-      setTimeout(() => setLink(''), 500);
+      setTimeout(() => setLink(''), 300);
     } else {
       setLink(card.link);
     }
@@ -27,4 +27,4 @@ const ModalWithImageComponent = ({ card, onClose }) => {
   );
 }
 
-export default ModalWithImageComponent;
+export default ImagePopup;
