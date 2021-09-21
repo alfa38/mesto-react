@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Header from './components/header';
-import Main from './components/main';
-import Footer from './components/footer';
-import PopupWithForm from './components/popupWithForm';
-import ModalWithImage from './components/ImagePopup';
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
+import PopupWithForm from './PopupWithForm';
+import ModalWithImage from './ImagePopup';
 
 import './App.css';
 
