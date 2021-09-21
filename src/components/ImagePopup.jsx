@@ -10,6 +10,7 @@ const ImagePopup = ({ card, onClose }) => {
       setLink(card.link);
     }
   }, [card]);
+  console.log(card);
   return (
     <div className={`modal-overlay ${card ? "modal-overlay_open" : ""}`} id="modal-photo-viewier">
       <div className="modal-overlay__content">
@@ -20,7 +21,7 @@ const ImagePopup = ({ card, onClose }) => {
           onClick={onClose} />
         <figure className="photo-viewier">
           <img className="photo-viewier__image" src={link} alt={card && card.name ? card.name : ''} />
-          <figcaption className="photo-viewier__caption"></figcaption>
+          <figcaption className="photo-viewier__caption">{card && card.name ? card.name : ''}</figcaption>
         </figure>
       </div>
     </div>

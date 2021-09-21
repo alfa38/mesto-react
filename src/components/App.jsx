@@ -5,8 +5,6 @@ import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ModalWithImage from './ImagePopup';
 
-import './App.css';
-
 function App() {
   const handleEditAvatarClick = () => {
     setEditAvatarOpen(true);
