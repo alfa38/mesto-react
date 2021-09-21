@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import Card from "./card";
+import Card from "./Card";
 
 import Api from "../utils/api";
 
@@ -58,7 +58,13 @@ const Main = ({ onAddPlace, onEditAvatar, onEditProfile, onCardClick }) => {
       </section>
       <section className="cards-container">
         {cards.map((cardItem, key) => {
-          return <Card card={cardItem} onCardClick={onCardClick} key={`cardItem${key}`}/>
+          return (
+            <Card
+              card={cardItem}
+              onCardClick={onCardClick}
+              key={`cardItem${cardItem._id}`}
+            />
+          )
         })}
       </section>
     </main>

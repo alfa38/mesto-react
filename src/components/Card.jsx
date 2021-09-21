@@ -21,7 +21,7 @@ const Card = ({ card, onCardClick }) => {
         <h2 className="card-item__name">{card.name}</h2>
         <div className="card-item__like-container">
           <button className="card-item__button card-item__button_type_set-like" type="button" aria-label="Поставить лайк" />
-          <span className="card-item__like-count"></span>
+          <span className="card-item__like-count">{card.likes.length}</span>
         </div>
       </div>
     </div>

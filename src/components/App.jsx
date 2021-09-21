@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import Header from './components/header';
-import Main from './components/main';
-import Footer from './components/footer';
-import PopupWithForm from './components/popupWithForm';
-import ModalWithImage from './components/ImagePopup';
-
-import './App.css';
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
+import PopupWithForm from './PopupWithForm';
+import ModalWithImage from './ImagePopup';
 
 function App() {
+  const [isEditProfilePopupOpen, setEditProfileOpen] = useState(false);
+  const [isAddPlacePopupOpen, setAddPlaceModalOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(undefined);
+
   const handleEditAvatarClick = () => {
     setEditAvatarOpen(true);
   }
@@ -31,10 +34,7 @@ function App() {
     setSelectedCard(undefined);
   }
 
-  const [isEditProfilePopupOpen, setEditProfileOpen] = useState(false);
-  const [isAddPlacePopupOpen, setAddPlaceModalOpen] = useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(undefined);
+
 
   return (
     <>
@@ -68,7 +68,7 @@ function App() {
         headerTitle="Новое место"
         buttonAriaText="Добавить новое место"
         isOpen={isAddPlacePopupOpen}
-        onClose={() => closeAllPopups()}
+        onClose={closeAllPopups}
       >
         <div className="edit-form__inputs-container">
           <input name="cardName" className="edit-form__input edit-form__input_edit_name" id="input-cardname" type="text" placeholder="Название" minLength="2" maxLength="30" required />
@@ -82,7 +82,7 @@ function App() {
         headerTitle="Сменить аватар"
         buttonAriaText="Сохранить изменения"
         isOpen={isEditAvatarPopupOpen}
-        onClose={() => closeAllPopups()}
+        onClose={closeAllPopups}
       >
         <div className="edit-form__inputs-container">
           <input name="avatarLink" id="input-avatarLink" type="url" className="edit-form__input edit-form__input_edit_img-source" placeholder="Ссылка на новый аватар" required />
@@ -94,11 +94,11 @@ function App() {
         headerTitle="Вы уверены?"
         okButtonText='Да'
         buttonAriaText="Подтвердить удаление карточки"
-        onClose={() => closeAllPopups()}
+        onClose={closeAllPopups}
       >
       </PopupWithForm>
       <ModalWithImage
-        onClose={() => closeAllPopups()}
+        onClose={closeAllPopups}
         card={selectedCard}
         />
     </>
