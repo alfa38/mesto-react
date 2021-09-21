@@ -10,7 +10,6 @@ const ImagePopup = ({ card, onClose }) => {
       setLink(card.link);
     }
   }, [card]);
-  console.log(card);
   return (
     <div className={`modal-overlay ${card ? "modal-overlay_open" : ""}`} id="modal-photo-viewier">
       <div className="modal-overlay__content">
