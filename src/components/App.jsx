@@ -4,6 +4,7 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ModalWithImage from './ImagePopup';
+import EditProfilePopup from './EditProfilePopup';
 import { СurrentUserContext } from '../contexts/CurrentUser';
 import Api from '../utils/api';
 
@@ -29,6 +30,15 @@ function App() {
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
+  }
+
+  const handleUpdateUser  = (user) => {
+    Api.updateProfile(user).then((response) => {
+      setCurrentUser(response);
+      closeAllPopups();
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   const closeAllPopups = () => {
@@ -60,21 +70,7 @@ function App() {
         />
         <Footer />
       </div>
-      <PopupWithForm
-        name='edit-profile'
-        headerTitle="Редактировать профиль"
-        buttonAriaText="Сохранить изменения профиля"
-        closeAriaText="Закрыть без изменения"
-        onClose={() => closeAllPopups()}
-        isOpen={isEditProfilePopupOpen}
-      >
-        <div className="edit-form__inputs-container">
-          <input minLength="2" maxLength="40" name="name" id="input-name" className="edit-form__input edit-form__input_edit_name" type="text" placeholder="Введите Ваше Имя" required />
-          <span className="edit-form__error input-name-error">Error</span>
-          <input minLength="2" maxLength="200" name="profession" id="input-profession" className="edit-form__input edit-form__input_edit_profession" type="text" placeholder="Укажите род вашей деятельности" required />
-          <span className="edit-form__error input-profession-error">Error</span>
-        </div>
-      </PopupWithForm>
+      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
       <PopupWithForm
         name="add-new-card"
         headerTitle="Новое место"
