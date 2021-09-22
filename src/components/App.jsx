@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ModalWithImage from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
 import { СurrentUserContext } from '../contexts/CurrentUser';
 import Api from '../utils/api';
 
@@ -34,6 +35,15 @@ function App() {
 
   const handleUpdateUser  = (user) => {
     Api.updateProfile(user).then((response) => {
+      setCurrentUser(response);
+      closeAllPopups();
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const handleUpdateAvatar = (newLink) => {
+    Api.updateAvatar(newLink).then((response) => {
       setCurrentUser(response);
       closeAllPopups();
     }).catch((error) => {
@@ -85,18 +95,7 @@ function App() {
           <span className="edit-form__error input-cardlink-error">Error</span>
         </div>
       </PopupWithForm>
-      <PopupWithForm
-        name="update-avatar"
-        headerTitle="Сменить аватар"
-        buttonAriaText="Сохранить изменения"
-        isOpen={isEditAvatarPopupOpen}
-        onClose={closeAllPopups}
-      >
-        <div className="edit-form__inputs-container">
-          <input name="avatarLink" id="input-avatarLink" type="url" className="edit-form__input edit-form__input_edit_img-source" placeholder="Ссылка на новый аватар" required />
-          <span className="edit-form__error input-avatarLink-error">Error</span>
-        </div>
-      </PopupWithForm>
+      <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
       <PopupWithForm
         name="confirm-delete"
         headerTitle="Вы уверены?"

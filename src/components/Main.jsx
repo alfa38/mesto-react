@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createRef } from "react";
 
 import Card from "./Card";
 import { СurrentUserContext } from '../contexts/CurrentUser';
@@ -9,7 +9,6 @@ import { useContext } from "react";
 const Main = ({ onAddPlace, onEditAvatar, onEditProfile, onCardClick }) => {
 
   const currentUser = useContext(СurrentUserContext);
-
 
   const [cards, setCards] = useState([]);
   useEffect(() => {
