@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from "react";
 
 import Card from "./Card";
+import { СurrentUserContext } from '../contexts/CurrentUser';
 
 import Api from "../utils/api";
+import { useContext } from "react";
 
 const Main = ({ onAddPlace, onEditAvatar, onEditProfile, onCardClick }) => {
 
+  const currentUser = useContext(СurrentUserContext);
 
-  const [userName, setUserName] = useState("Жак-Ив Кусто");
-  const [userDescription, setUserDescription] = useState("Исследователь океана");
-  const [userAvatar, setUserAvatar] = useState("https://pictures.s3.yandex.net/frontend-developer/common/ava.jpg");
 
   const [cards, setCards] = useState([]);
-  useEffect(() => {
-    Api.getUserInfo().then((response) => {
-      setUserName(response.name);
-      setUserAvatar(response.avatar);
-      setUserDescription(response.about);
-    }).catch((error) => {
-      console.log(error);
-    });
-  }, []);
   useEffect(() => {
     Api.getInitialCards().then((response) => {
       setCards(response);
@@ -28,18 +19,41 @@ const Main = ({ onAddPlace, onEditAvatar, onEditProfile, onCardClick }) => {
       console.log(error);
     });
   }, []);
+
+  const handleCardLike = (cardId, isLiked) => {
+    const apiCall = isLiked ? () => Api.unlike(cardId) : () => Api.like(cardId);
+    apiCall(cardId).then((response) => {
+      const newCards = cards.map((cardItem) => {
+        return cardItem._id === response._id ? response : cardItem;
+      })
+      setCards(newCards);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const handleCardDelete = (cardId) => {
+    Api.deleteCard(cardId).then(() => {
+      const newCards = cards.filter((cardItem) => {
+        return cardItem._id !== cardId;
+      });
+      setCards(newCards);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
   return (
     <main className="content">
       <section className="profile">
         <div className="profile__avatar-container">
-          <img className="profile__avatar" src={userAvatar} alt="Ваш аватар"></img>
+          <img className="profile__avatar" src={currentUser.avatar} alt="Ваш аватар"></img>
           <div
             className="profile__avatar-overlay"
             onClick={onEditAvatar} />
         </div>
         <div className="profile__data-container">
           <div className="profile__name-container">
-            <h1 className="profile__name">{userName}</h1>
+            <h1 className="profile__name">{currentUser.name}</h1>
             <button
               className="profile__button profile__button_type_edit-profile"
               value="profile_edit"
@@ -48,7 +62,7 @@ const Main = ({ onAddPlace, onEditAvatar, onEditProfile, onCardClick }) => {
               onClick={onEditProfile}
             />
           </div>
-          <h2 className="profile__profession">{userDescription}</h2>
+          <h2 className="profile__profession">{currentUser.about}</h2>
         </div>
         <button
           className="profile__button profile__button_type_add-card"
@@ -63,6 +77,8 @@ const Main = ({ onAddPlace, onEditAvatar, onEditProfile, onCardClick }) => {
               card={cardItem}
               onCardClick={onCardClick}
               key={`cardItem${cardItem._id}`}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
             />
           )
         })}

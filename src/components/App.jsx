@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ModalWithImage from './ImagePopup';
+import { СurrentUserContext } from '../contexts/CurrentUser';
+import Api from '../utils/api';
 
 function App() {
+
+  const [currentUser, setCurrentUser] = useState({name: "Жак-Ив Кусто", about: "Исследователь океана", _id: 'someCompletelyAndAbsolutelyRandomId', avatar: "https://proza.ru/pics/2020/06/11/119.jpg"});
   const [isEditProfilePopupOpen, setEditProfileOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlaceModalOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarOpen] = useState(false);
@@ -34,10 +38,18 @@ function App() {
     setSelectedCard(undefined);
   }
 
+  useEffect(() => {
+    Api.getUserInfo().then((response) => {
+      setCurrentUser(response);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }, []);
+
 
 
   return (
-    <>
+    <СurrentUserContext.Provider value={currentUser}>
       <div className='page'>
         <Header />
         <Main
@@ -101,7 +113,7 @@ function App() {
         onClose={closeAllPopups}
         card={selectedCard}
         />
-    </>
+    </СurrentUserContext.Provider>
   );
 }
 
