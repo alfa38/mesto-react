@@ -35,7 +35,7 @@ class ApiClass {
             headers: this._headers,
             body: JSON.stringify({
                 name: data.name,
-                about: data.profession,
+                about: data.about,
             })
         }).then(this._processResponse);
     }
