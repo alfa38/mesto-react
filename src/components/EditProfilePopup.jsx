@@ -1,11 +1,19 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, createRef } from 'react';
 import { СurrentUserContext } from '../contexts/CurrentUser';
 import PopupWithForm from './PopupWithForm';
 
 const EditProfilePopup = ({ onClose, isOpen, onUpdateUser }) => {
+  const nameRef = createRef();
+  const descriptionRef = createRef();
+
   const currentUser = useContext(СurrentUserContext);
   const [name, setName] = useState('');
+  const [isNameValid, setNameValidity] = useState(true);
+  const [nameValidationMessage, setNameValidationMessage] = useState('');
   const [description, setDescription] = useState('');
+  const [isDescriptionValid, setDescriptionValidity] = useState(true);
+  const [descriptionValidationMessage, setDescriptionValidationMessage] = useState('');
+
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
@@ -18,9 +26,13 @@ const EditProfilePopup = ({ onClose, isOpen, onUpdateUser }) => {
     switch(name) {
       case 'name':
         setName(value);
+        setNameValidity(nameRef.current.validity.valid);
+        setNameValidationMessage(nameRef.current.validationMessage);
         break;
       case 'description':
         setDescription(value);
+        setDescriptionValidity(descriptionRef.current.validity.valid);
+        setDescriptionValidationMessage(descriptionRef.current.validationMessage);
         break;
       default:
         break;
@@ -44,9 +56,11 @@ const EditProfilePopup = ({ onClose, isOpen, onUpdateUser }) => {
       onClose={onClose}
       isOpen={isOpen}
       onSubmit={handleSubmit}
+      isSubmitDisabled={!isNameValid || !isDescriptionValid}
     >
       <div className="edit-form__inputs-container">
         <input
+          ref={nameRef}
           minLength="2"
           maxLength="40"
           name="name"
@@ -58,8 +72,9 @@ const EditProfilePopup = ({ onClose, isOpen, onUpdateUser }) => {
           placeholder="Введите Ваше Имя"
           required
         />
-        <span className="edit-form__error input-name-error">Error</span>
+        <span className={`edit-form__error input-cardname-error ${!isNameValid ? 'edit-form__error_visible' : ''}`}>{nameValidationMessage}</span>
         <input
+          ref={descriptionRef}
           minLength="2"
           maxLength="200"
           name="description"
@@ -71,7 +86,7 @@ const EditProfilePopup = ({ onClose, isOpen, onUpdateUser }) => {
           placeholder="Укажите род вашей деятельности"
           required
         />
-        <span className="edit-form__error input-profession-error">Error</span>
+        <span className={`edit-form__error input-cardname-error ${!isDescriptionValid ? 'edit-form__error_visible' : ''}`}>{descriptionValidationMessage}</span>
       </div>
     </PopupWithForm>
   );
