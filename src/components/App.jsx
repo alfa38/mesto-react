@@ -12,7 +12,7 @@ import Api from '../utils/api';
 
 function App() {
 
-  const [currentUser, setCurrentUser] = useState({name: "Жак-Ив Кусто", about: "Исследователь океана", _id: 'someCompletelyAndAbsolutelyRandomId', avatar: "https://proza.ru/pics/2020/06/11/119.jpg"});
+  const [currentUser, setCurrentUser] = useState({ name: "Жак-Ив Кусто", about: "Исследователь океана", _id: 'someCompletelyAndAbsolutelyRandomId', avatar: "https://proza.ru/pics/2020/06/11/119.jpg" });
   const [isEditProfilePopupOpen, setEditProfileOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlaceModalOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarOpen] = useState(false);
@@ -43,7 +43,7 @@ function App() {
     });
   }
 
-  const handleUpdateUser  = (user) => {
+  const handleUpdateUser = (user) => {
     Api.updateProfile(user).then((response) => {
       setCurrentUser(response);
       closeAllPopups();
@@ -82,14 +82,28 @@ function App() {
 
   const handleCardDelete = (cardId) => {
     Api.deleteCard(cardId).then(() => {
-      const newCards = cards.filter((cardItem) => {
-        return cardItem._id !== cardId;
-      });
-      setCards(newCards);
+      setCards((state) => {
+        return state.filter((cardItem) => {
+          return cardItem._id !== cardId;
+        });
+      })
     }).catch((error) => {
       console.log(error);
     });
   }
+
+
+
+  useEffect(() => {
+    const closeByEscape = (e) => {
+      if (e.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+    document.addEventListener('keydown', closeByEscape)
+
+    return () => document.removeEventListener('keydown', closeByEscape)
+  }, [])
 
   // Effects
   useEffect(() => {
@@ -139,7 +153,7 @@ function App() {
       <ModalWithImage
         onClose={closeAllPopups}
         card={selectedCard}
-        />
+      />
     </СurrentUserContext.Provider>
   );
 }

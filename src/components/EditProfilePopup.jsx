@@ -1,38 +1,41 @@
-import React, { useEffect, useState, useContext, createRef } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { СurrentUserContext } from '../contexts/CurrentUser';
 import PopupWithForm from './PopupWithForm';
 
 const EditProfilePopup = ({ onClose, isOpen, onUpdateUser }) => {
-  const nameRef = createRef();
-  const descriptionRef = createRef();
-
   const currentUser = useContext(СurrentUserContext);
   const [name, setName] = useState('');
-  const [isNameValid, setNameValidity] = useState(true);
+  const [isNameValid, setNameValidity] = useState(false);
   const [nameValidationMessage, setNameValidationMessage] = useState('');
   const [description, setDescription] = useState('');
-  const [isDescriptionValid, setDescriptionValidity] = useState(true);
+  const [isDescriptionValid, setDescriptionValidity] = useState(false);
   const [descriptionValidationMessage, setDescriptionValidationMessage] = useState('');
 
   useEffect(() => {
     setName(currentUser.name);
+    setNameValidity(false);
+    setNameValidationMessage('');
     setDescription(currentUser.about);
-  }, [currentUser]);
+    setDescriptionValidity(false);
+    setDescriptionValidationMessage('');
+  }, [currentUser, isOpen]);
 
   const handleInputChange = (e) => {
     e.preventDefault();
+    const isValid = e.target.validity.valid;
+    const validationMessage = e.target.validationMessage;
     const name = e.target.name;
     const value = e.target.value;
     switch(name) {
       case 'name':
         setName(value);
-        setNameValidity(nameRef.current.validity.valid);
-        setNameValidationMessage(nameRef.current.validationMessage);
+        setNameValidity(isValid);
+        setNameValidationMessage(validationMessage);
         break;
       case 'description':
         setDescription(value);
-        setDescriptionValidity(descriptionRef.current.validity.valid);
-        setDescriptionValidationMessage(descriptionRef.current.validationMessage);
+        setDescriptionValidity(isValid);
+        setDescriptionValidationMessage(validationMessage);
         break;
       default:
         break;
@@ -60,7 +63,6 @@ const EditProfilePopup = ({ onClose, isOpen, onUpdateUser }) => {
     >
       <div className="edit-form__inputs-container">
         <input
-          ref={nameRef}
           minLength="2"
           maxLength="40"
           name="name"
@@ -74,7 +76,6 @@ const EditProfilePopup = ({ onClose, isOpen, onUpdateUser }) => {
         />
         <span className={`edit-form__error input-cardname-error ${!isNameValid ? 'edit-form__error_visible' : ''}`}>{nameValidationMessage}</span>
         <input
-          ref={descriptionRef}
           minLength="2"
           maxLength="200"
           name="description"
