@@ -1,9 +1,8 @@
-import React, { useState, createRef } from 'react';
+import React, { useState } from 'react';
+import { useEffect } from 'react/cjs/react.development';
 import PopupWithForm from './PopupWithForm';
 
 const AddPlacePopup = ({ isOpen, onClose, onAddPlace }) => {
-  const nameRef = createRef();
-  const linkRef = createRef();
 
   const [name, setName] = useState('');
   const [isNameValid, setNameValidity] = useState(false);
@@ -13,18 +12,20 @@ const AddPlacePopup = ({ isOpen, onClose, onAddPlace }) => {
   const [linkValidationMessage, setLinkValidationMessage] = useState('');
 
   const handleInputs = (event) => {
+    const isValid = event.target.validity.valid;
+    const validationMessage = event.target.validationMessage;
     const name = event.target.name;
     const value = event.target.value;
-    switch(name) {
+    switch (name) {
       case 'cardName':
         setName(value);
-        setNameValidity(nameRef.current.validity.valid);
-        setNameValidationMessage(nameRef.current.validationMessage);
+        setNameValidity(isValid);
+        setNameValidationMessage(validationMessage);
         break;
       case 'cardLink':
         setLink(value);
-        setLinkValidity(linkRef.current.validity.valid);
-        setLinkValidationMessage(linkRef.current.validationMessage);
+        setLinkValidity(isValid);
+        setLinkValidationMessage(validationMessage);
         break;
       default:
         break;
@@ -35,6 +36,16 @@ const AddPlacePopup = ({ isOpen, onClose, onAddPlace }) => {
     e.preventDefault();
     onAddPlace(name, link);
   }
+
+  useEffect(() => {
+    setName('');
+    setLink('');
+    setNameValidity(false);
+    setLinkValidity(false);
+    setNameValidationMessage('');
+    setLinkValidationMessage('');
+  }, [isOpen]);
+
   return (
     <PopupWithForm
       name="add-new-card"
@@ -47,7 +58,6 @@ const AddPlacePopup = ({ isOpen, onClose, onAddPlace }) => {
     >
       <div className="edit-form__inputs-container">
         <input
-          ref={nameRef}
           name="cardName"
           className="edit-form__input edit-form__input_edit_name"
           id="input-cardname"
@@ -61,7 +71,6 @@ const AddPlacePopup = ({ isOpen, onClose, onAddPlace }) => {
         />
         <span className={`edit-form__error input-cardname-error ${!isNameValid ? 'edit-form__error_visible' : ''}`}>{nameValidationMessage}</span>
         <input
-          ref={linkRef}
           name="cardLink"
           id="input-cardlink"
           value={link}
