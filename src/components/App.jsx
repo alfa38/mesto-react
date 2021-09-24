@@ -38,6 +38,7 @@ function App() {
   const handleSubmitPlace = (name, link) => {
     Api.addNewCard(name, link).then((response) => {
       setCards([response, ...cards]);
+      closeAllPopups();
     }).catch((error) => {
       console.log(error);
     });
